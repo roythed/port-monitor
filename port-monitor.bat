@@ -459,9 +459,9 @@ WHY PORT MONITOR?
   It alerts only after one full hour of no active connections.
 
   Key advantages:
-  * Idle time tracking: a forgotten listener sits idle for
-    hours. A real service always has traffic. Port Monitor
-    catches exactly this difference.
+  * Idle time tracking: a forgotten tool stays open for hours
+    with no active connections. That pattern - listening but
+    completely idle - is what Port Monitor detects.
   * Automatic: runs every 15 min via Task Scheduler.
     No manual scanning or external machine needed.
   * Smart whitelist: ~35 known-safe processes, ~25 ports.
@@ -588,7 +588,7 @@ FILES IN THIS FOLDER:
   התראה מופיעה רק אחרי שעה שלמה של idle.
 
   יתרונות מרכזיים:
-  • מעקב idle: listener שנשכח שעות ריק — שירות לגיטימי תמיד פעיל.
+  • מעקב idle: כלי שנשכח נשאר פתוח שעות ללא חיבורים פעילים — הדפוס הזה מה שהכלי מזהה.
   • אוטומטי: רץ כל 15 דקות דרך Task Scheduler,
     ללא הפעלה ידנית.
   • רשימת היתרים חכמה: 35+ תהליכים, 25+ פורטים.
