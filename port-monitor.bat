@@ -29,6 +29,10 @@ $DEFAULT_HASH = "5994471ABB01112AFCC18159F6CC74B4F511B99806DA59B3CAF5A9C173CACFC
 $PM_SCRIPT = @'
 #Requires -Version 5.1
 # port-monitor.ps1 - Open-port monitor with tamper protection
+# Usage:
+#   Normal (Task Scheduler) : powershell -ExecutionPolicy Bypass -File port-monitor.ps1
+#   Demo / test             : powershell -ExecutionPolicy Bypass -File port-monitor.ps1 -Demo
+# Setup is handled by port-monitor.bat (the launcher).
 
 param([switch]$Demo)
 
@@ -370,6 +374,9 @@ Invoke-Scan
 $RV_SCRIPT = @'
 #Requires -Version 5.1
 # readme-viewer.ps1 - Password-protected README viewer for Port Monitor
+# Default password: 12345
+# To change password: use "Change Password" button inside, or ask Claude Code.
+# Run: powershell -ExecutionPolicy Bypass -File readme-viewer.ps1
 
 param([switch]$SetupMode)
 
@@ -581,29 +588,29 @@ FILES IN THIS FOLDER:
   התראה מופיעה רק אחרי שעה שלמה של idle.
 
   יתרונות מרכזיים:
-  * מעקב idle: listener שנשכח שעות ריק — שירות לגיטימי תמיד פעיל.
-  * אוטומטי: רץ כל 15 דקות דרך Task Scheduler,
+  • מעקב idle: listener שנשכח שעות ריק — שירות לגיטימי תמיד פעיל.
+  • אוטומטי: רץ כל 15 דקות דרך Task Scheduler,
     ללא הפעלה ידנית.
-  * רשימת היתרים חכמה: 35+ תהליכים, 25+ פורטים.
+  • רשימת היתרים חכמה: 35+ תהליכים, 25+ פורטים.
     רק listeners לא-מוכרים מייצרים התראה.
-  * סינון localhost: listeners על 127.0.0.1 מוחרגים.
+  • סינון localhost: listeners על 127.0.0.1 מוחרגים.
     כלי pentest שצריך חיבורים מרוחקים חייב 0.0.0.0.
-  * זיהוי תהליך: "[TCP] Port 4444 - powershell (idle 87 min)".
-  * קובץ יחיד: אין Python, אין Node.js, אין installer.
+  • זיהוי תהליך: "[TCP] Port 4444 - powershell (idle 87 min)".
+  • קובץ יחיד: אין Python, אין Node.js, אין installer.
     מעתיקים את ה-.bat לכל מקום ומריצים.
-  * מותאם לפנטסט: מיועד לתרגילי Kali VM שבהם
+  • מותאם לפנטסט: מיועד לתרגילי Kali VM שבהם
     נשכחים פתוחים — reverse shell listeners.
 
 איך זה עובד?
-  * כל 15 דקות משימת רקע סורקת פורטי TCP ו-UDP.
-  * לכל פורט TCP לא-מוכר: יש חיבורים פעילים? כן - מתעלמים.
+  • כל 15 דקות משימת רקע סורקת פורטי TCP ו-UDP.
+  • לכל פורט TCP לא-מוכר: יש חיבורים פעילים? כן - מתעלמים.
     לא - צבר שעה ללא תעבורה - התראה.
     פורט UDP לא-מוכר, connectionless: נשמר פתוח שעה? - התראה.
-  * חלון קטן מופיע בפינה ימין-תחתון עם רשימת הפורטים.
+  • חלון קטן מופיע בפינה ימין-תחתון עם רשימת הפורטים.
     נסגר אוטומטית אחרי 45 שניות.
-  * ניתן לסמן פורטים לסגירה וללחוץ "Close Selected".
+  • ניתן לסמן פורטים לסגירה וללחוץ "Close Selected".
     המערכת תסיים את התהליך המחזיק אותו.
-  * הפורט שהפעיל את ההתראה מסומן מראש כברירת-מחדל.
+  • הפורט שהפעיל את ההתראה מסומן מראש כברירת-מחדל.
 
 מה זה לא עושה:
   - אינו שולח נתונים לאינטרנט
@@ -620,10 +627,10 @@ FILES IN THIS FOLDER:
 
 לאונצ'ר — port-monitor.bat:
   לחיצה כפולה על port-monitor.bat פותחת לוח שליטה:
-  * התקנה ראשונה / אישור מחדש  — [Setup]
-  * הדגמת חלון ההתראה          — [Run Demo]
-  * עצירת הסריקות, דורש סיסמא  — [Disable]
-  * חזרת הסריקות, ללא סיסמא    — [Enable]
+  • התקנה ראשונה / אישור מחדש  — [Setup]
+  • הדגמת חלון ההתראה          — [Run Demo]
+  • עצירת הסריקות, דורש סיסמא  — [Disable]
+  • חזרת הסריקות, ללא סיסמא    — [Enable]
 
   למה Disable מוגן בסיסמא אבל Enable לא?
   תוקף שמשיג גישה למחשב ינסה להשבית את הניטור
@@ -631,7 +638,7 @@ FILES IN THIS FOLDER:
   פעולה בטוחה ואינה מוגנת.
 
 גישה ל-README — סיסמא:
-  סיסמת ברירת-מחדל: 12345
+  סיסמאת ברירת-מחדל: 12345
   - במהלך ההתקנה ניתן לקרוא ללא סיסמא, פעם אחת.
   - לאחר ההתקנה נדרשת סיסמא בכל כניסה.
   - הסיסמא נשמרת בצורה מאובטחת - לא בטקסט רגיל.
@@ -640,11 +647,11 @@ FILES IN THIS FOLDER:
     יעדכן Claude את readme-password.json עם ערך חדש.
 
 התקנה על מחשב חדש:
-  * העבר את קובץ port-monitor.bat בלבד, קובץ יחיד מספיק.
-  * לחץ לחיצה כפולה על port-monitor.bat.
-  * קרא את חלון ההסכמה, סמן את התיבה, לחץ Approve.
-  * ניתן לקרוא מדריך זה ללא סיסמא מיד לאחר ההתקנה.
-  * זהו. Task Scheduler וקיצורי דרך נוצרים אוטומטית.
+  • העבר את קובץ port-monitor.bat בלבד, קובץ יחיד מספיק.
+  • לחץ לחיצה כפולה על port-monitor.bat.
+  • קרא את חלון ההסכמה, סמן את התיבה, לחץ Approve.
+  • ניתן לקרוא מדריך זה ללא סיסמא מיד לאחר ההתקנה.
+  • זהו. Task Scheduler וקיצורי דרך נוצרים אוטומטית.
 
 ================================================================
   גרסה: 2.0 | שאלות ואיפוס סיסמא — פנה ל-Claude Code
@@ -680,30 +687,55 @@ FILES IN THIS FOLDER:
     $form.Controls.Add($panel)
     $form.Controls.Add($rtb)
 
+    # BiDi fix v4 - RTF-based: SelectionRightToLeft proved unreliable on Windows 11.
+    # Build content as RTF with \ltrpar for English and \rtlpar\qr\rtlch for Hebrew.
     $form.Add_Shown({
-        $sep  = "----------------------------------------------------------------"
-        $full = $rtb.Text
-        $sepIdx = $full.IndexOf($sep)
-        if ($sepIdx -ge 0) {
-            $enPart = $full.Substring(0, $sepIdx + $sep.Length)
-            $hePart = $full.Substring($sepIdx + $sep.Length)
-            $rtb.ReadOnly = $false
-            $rtb.Clear()
-            $rtb.SelectionRightToLeft = $false
-            $rtb.SelectionAlignment   = [System.Windows.Forms.HorizontalAlignment]::Left
-            $rtb.AppendText($enPart)
-            $rtb.SelectionRightToLeft = $false
-            $rtb.SelectionAlignment   = [System.Windows.Forms.HorizontalAlignment]::Left
-            $rtb.AppendText("`n")
-            foreach ($hl in ($hePart -split "`r?`n" | Select-Object -Skip 1)) {
-                $rtb.SelectionRightToLeft = $true
-                $rtb.SelectionAlignment   = [System.Windows.Forms.HorizontalAlignment]::Right
-                $rtb.AppendText($hl + "`n")
+        function ConvertTo-RtfEscape([string]$text) {
+            $sb = New-Object System.Text.StringBuilder
+            foreach ($c in $text.ToCharArray()) {
+                $n = [int]$c
+                if    ($n -eq 92)   { $sb.Append('\\') }
+                elseif ($n -eq 123) { $sb.Append('\{') }
+                elseif ($n -eq 125) { $sb.Append('\}') }
+                elseif ($n -lt 128) { $sb.Append([char]$n) }
+                else {
+                    $signed = if ($n -gt 32767) { $n - 65536 } else { $n }
+                    $sb.Append("\u${signed}?")
+                }
             }
-            $rtb.ReadOnly = $true
-            $rtb.SelectionStart = 0
-            $rtb.ScrollToCaret()
+            return $sb.ToString()
         }
+
+        $sep    = "----------------------------------------------------------------"
+        $full   = $rtb.Text
+        $sepIdx = $full.IndexOf($sep)
+        if ($sepIdx -lt 0) { return }
+
+        $enLines = ($full.Substring(0, $sepIdx + $sep.Length)) -split "`r?`n"
+        $heLines = ($full.Substring($sepIdx + $sep.Length)) -split "`r?`n" | Select-Object -Skip 1
+
+        $r = New-Object System.Text.StringBuilder
+        $r.Append('{\rtf1\ansi\deff0')
+        $r.Append('{\fonttbl{\f0\fnil\fcharset0 Consolas;}}')
+        $r.Append('{\colortbl;\red220\green220\blue220;}')
+        $r.Append('\viewkind4\uc1 ')
+        foreach ($line in $enLines) {
+            $r.Append('\pard\ltrpar\ql\f0\fs20\cf1 ')
+            $r.Append((ConvertTo-RtfEscape $line))
+            $r.Append('\par ')
+        }
+        foreach ($line in $heLines) {
+            $r.Append('\pard\rtlpar\qr\rtlch\f0\fs20\cf1 ')
+            $r.Append((ConvertTo-RtfEscape $line))
+            $r.Append('\par ')
+        }
+        $r.Append('}')
+
+        $rtb.ReadOnly = $false
+        $rtb.Rtf = $r.ToString()
+        $rtb.ReadOnly = $true
+        $rtb.SelectionStart = 0
+        $rtb.ScrollToCaret()
     })
 
     $form.Add_Resize({
@@ -882,39 +914,46 @@ function New-PortMonitorIcon([string]$path) {
     $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
     $g.Clear([System.Drawing.Color]::Transparent)
 
+    # Handle (draw first so lens covers its base)
     $penH = New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(255,110,65,20), 4)
     $penH.StartCap = [System.Drawing.Drawing2D.LineCap]::Round
     $penH.EndCap   = [System.Drawing.Drawing2D.LineCap]::Round
     $g.DrawLine($penH, 18, 18, 29, 29)
 
+    # Lens fill (semi-transparent blue tint)
     $bLens = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(45,80,150,230))
     $g.FillEllipse($bLens, 1, 1, 20, 20)
 
+    # Lens border (dark blue)
     $penL = New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(255,30,80,190), 2.5)
     $g.DrawEllipse($penL, 1, 1, 20, 20)
 
+    # Lock body (golden fill + border)
     $bBody = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(240,210,155,35))
     $penB  = New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(255,155,105,10), 1.2)
     $g.FillRectangle($bBody, 5, 14, 12, 7)
     $g.DrawRectangle($penB, 5, 14, 12, 7)
 
+    # Keyhole (small dark circle)
     $g.FillEllipse([System.Drawing.Brushes]::DimGray, 9, 16, 4, 3)
 
+    # Open shackle: left post, arc over top, right post raised (open side)
     $penS = New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(255,155,105,10), 1.8)
-    $g.DrawLine($penS, 8, 14, 8, 9)
-    $g.DrawArc($penS, 8, 6, 6, 6, 180, -180)
-    $g.DrawLine($penS, 14, 9, 14, 5)
+    $g.DrawLine($penS, 8, 14, 8, 9)          # left post
+    $g.DrawArc($penS, 8, 6, 6, 6, 180, -180) # top arc (counterclockwise = top half)
+    $g.DrawLine($penS, 14, 9, 14, 5)          # right post raised = open lock
 
     $g.Dispose(); $penH.Dispose(); $bLens.Dispose(); $penL.Dispose()
     $bBody.Dispose(); $penB.Dispose(); $penS.Dispose()
 
+    # Save as ICO (6-byte header + 16-byte dir entry + PNG image data)
     $ms = New-Object System.IO.MemoryStream
     $bmp.Save($ms, [System.Drawing.Imaging.ImageFormat]::Png)
     $png = $ms.ToArray(); $ms.Dispose(); $bmp.Dispose()
 
     $ico = New-Object System.IO.MemoryStream
     $w   = New-Object System.IO.BinaryWriter($ico)
-    $w.Write([uint16]0); $w.Write([uint16]1); $w.Write([uint16]1)
+    $w.Write([uint16]0); $w.Write([uint16]1); $w.Write([uint16]1)  # header
     $w.Write([byte]32);  $w.Write([byte]32);  $w.Write([byte]0); $w.Write([byte]0)
     $w.Write([uint16]1); $w.Write([uint16]32)
     $w.Write([uint32]$png.Length); $w.Write([uint32]22)
@@ -924,6 +963,7 @@ function New-PortMonitorIcon([string]$path) {
 }
 
 function Invoke-Setup {
+    # Form: 540 wide, 490 tall  |  Client ~532 x 456
     $form = New-Object System.Windows.Forms.Form
     $form.Text            = "Port Monitor - Setup"
     $form.Size            = New-Object System.Drawing.Size(540, 490)
@@ -976,6 +1016,7 @@ function Invoke-Setup {
     $chkStart.Checked  = $true
     $form.Controls.Add($chkStart)
 
+    # Buttons right-aligned: right edge at 517 (532-15)
     $btnApprove          = New-Object System.Windows.Forms.Button
     $btnApprove.Text     = "Approve and Setup"
     $btnApprove.Location = New-Object System.Drawing.Point(279, 408)
@@ -996,20 +1037,24 @@ function Invoke-Setup {
 
     if ($form.Tag -ne "approve") { return }
 
+    # --- Extract component scripts ---
     try { Set-ItemProperty -Path $scriptFile -Name IsReadOnly -Value $false } catch {}
     [System.IO.File]::WriteAllText($scriptFile,   $PM_SCRIPT, [System.Text.Encoding]::UTF8)
     [System.IO.File]::WriteAllText($readmeScript, $RV_SCRIPT, [System.Text.Encoding]::UTF8)
 
+    # Password file - only create if not already set
     if (-not (Test-Path $passwordFile)) {
         @{ hash = $DEFAULT_HASH; updatedAt = (Get-Date -Format "yyyy-MM-dd HH:mm:ss");
            note = "Password stored securely. To reset, ask Claude Code." } |
             ConvertTo-Json | Set-Content $passwordFile
     }
 
+    # Config file
     if (-not (Test-Path $configFile)) {
         @{ extraProcesses=@(); extraPorts=@(); extraUDPPorts=@() } | ConvertTo-Json | Set-Content $configFile
     }
 
+    # Compute hash of extracted script and save state
     $hash  = (Get-FileHash -Path $scriptFile -Algorithm SHA256).Hash
     $state = [PSCustomObject]@{ consentGiven=$true; scriptHash=$hash; lastAlertedAt=$null; idle=@(); active=@() }
     if (Test-Path $stateFile) {
@@ -1022,6 +1067,7 @@ function Invoke-Setup {
     $state | ConvertTo-Json -Depth 3 | Set-Content $stateFile
     try { Set-ItemProperty -Path $scriptFile -Name IsReadOnly -Value $true } catch {}
 
+    # Task Scheduler
     $taskMsg = "Task Scheduler: skipped."
     if ($chkTask.Checked) {
         $action   = New-ScheduledTaskAction -Execute "powershell.exe" `
@@ -1038,16 +1084,20 @@ function Invoke-Setup {
         $taskMsg = "Task Scheduler entry created (runs every 15 min)."
     }
 
+    # Create custom icon
     New-PortMonitorIcon $icoFile
 
+    # Create shortcuts
     $batPath = Join-Path $dir "port-monitor.bat"
     $rvBat   = Join-Path $dir "readme-viewer.bat"
     $shell   = New-Object -ComObject WScript.Shell
 
+    # Local shortcut (always create in same folder)
     $sc = $shell.CreateShortcut((Join-Path $dir "Port Monitor.lnk"))
     $sc.TargetPath = $batPath; $sc.IconLocation = "$icoFile,0"
     $sc.Description = "Port Monitor - Idle port security scanner"; $sc.Save()
 
+    # README shortcut (local)
     if (Test-Path $rvBat) {
         $sc2 = $shell.CreateShortcut((Join-Path $dir "View README.lnk"))
         $sc2.TargetPath = $rvBat
@@ -1081,6 +1131,7 @@ function Invoke-Setup {
         [System.Windows.Forms.MessageBoxIcon]::Information
     ) | Out-Null
 
+    # Offer README (no password required right after setup)
     if (Test-Path $readmeScript) {
         $ans = [System.Windows.Forms.MessageBox]::Show(
             "Would you like to read about what Port Monitor does?`n`nYou can view this now. A password will be required later.",
@@ -1095,6 +1146,7 @@ function Invoke-Setup {
 }
 
 function Show-PasswordPrompt {
+    # Form: 340 wide, 190 tall  |  Client ~332 x 156
     $pf = New-Object System.Windows.Forms.Form
     $pf.Text            = "Disable Monitoring - Confirm"
     $pf.Size            = New-Object System.Drawing.Size(340, 190)
@@ -1121,6 +1173,7 @@ function Show-PasswordPrompt {
     $lblErr.ForeColor = [System.Drawing.Color]::Red
     $pf.Controls.Add($lblErr)
 
+    # Buttons right-aligned: right edge at 317 (332-15)
     $btnCancel = New-Object System.Windows.Forms.Button
     $btnCancel.Text     = "Cancel"
     $btnCancel.Location = New-Object System.Drawing.Point(215, 105)
@@ -1148,6 +1201,7 @@ function Show-PasswordPrompt {
     return ($pf.Tag -eq "ok")
 }
 
+# --- Determine state ---
 $ready = $false
 if (Test-Path $stateFile) {
     try { $ready = [bool](Get-Content $stateFile -Raw | ConvertFrom-Json).consentGiven } catch {}
@@ -1157,6 +1211,9 @@ $task        = Get-ScheduledTask -TaskName "PortMonitor" -TaskPath "\Security\" 
 $taskExists  = $null -ne $task
 $taskEnabled = $taskExists -and ($task.State -ne "Disabled")
 
+# --- Main launcher form ---
+# Form: 430 wide, 260 tall  |  Client ~422 x 226
+
 $form = New-Object System.Windows.Forms.Form
 $form.Text            = "Port Monitor"
 $form.Size            = New-Object System.Drawing.Size(430, 260)
@@ -1165,6 +1222,7 @@ $form.FormBorderStyle = "FixedDialog"
 $form.MaximizeBox     = $false
 $form.TopMost         = $true
 
+# Try to set custom icon if available
 if (Test-Path $icoFile) {
     try { $form.Icon = New-Object System.Drawing.Icon($icoFile) } catch {}
 }
@@ -1188,6 +1246,7 @@ $lblStatus.Text      = if (-not $taskExists) { "Scheduled task: not installed" }
                        else                   { "Scheduled task: DISABLED" }
 $form.Controls.Add($lblStatus)
 
+# Row 1: three equal buttons filling 392px with 10px gaps  (124px each)
 $btnSetup          = New-Object System.Windows.Forms.Button
 $btnSetup.Text     = if ($ready) { "Re-run Setup" } else { "Setup (First Time)" }
 $btnSetup.Location = New-Object System.Drawing.Point(15, 75)
@@ -1226,6 +1285,7 @@ $lblProt.ForeColor = [System.Drawing.Color]::Gray
 $lblProt.Text     = "Scheduling control (disable requires password):"
 $form.Controls.Add($lblProt)
 
+# Row 2: two equal buttons  (191px each, 10px gap)
 $btnDisable          = New-Object System.Windows.Forms.Button
 $btnDisable.Text     = "Disable Monitoring"
 $btnDisable.Location = New-Object System.Drawing.Point(15, 157)
@@ -1246,6 +1306,7 @@ $form.Controls.Add($btnEnable)
 
 $null = $form.ShowDialog()
 
+# --- Actions ---
 if ($form.Tag -eq "setup") {
     Invoke-Setup
 
