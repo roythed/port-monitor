@@ -459,21 +459,21 @@ WHY PORT MONITOR?
   It alerts only after one full hour of no active connections.
 
   Key advantages:
-  * Idle time tracking: a forgotten tool stays open for hours
-    with no active connections. That pattern - listening but
-    completely idle - is what Port Monitor detects.
-  * Automatic: runs every 15 min via Task Scheduler.
+  • Idle time tracking: a forgotten tool stays open for hours
+    with no active connections. That pattern — listening but
+    completely idle — is what Port Monitor detects.
+  • Automatic: runs every 15 min via Task Scheduler.
     No manual scanning or external machine needed.
-  * Smart whitelist: ~35 known-safe processes, ~25 ports.
+  • Smart whitelist: ~35 known-safe processes, ~25 ports.
     Only genuinely unknown listeners trigger alerts.
-  * Localhost exclusion: 127.0.0.1 listeners are ignored.
+  • Localhost exclusion: 127.0.0.1 listeners are ignored.
     Pentest tools that accept remote connections MUST use
     0.0.0.0 - loopback is unreachable from the network.
-  * Process identification: alerts show who owns the port.
+  • Process identification: alerts show who owns the port.
     "[TCP] Port 4444 - powershell (idle 87 min)"
-  * Single file: no Python, no Node.js, no installer.
+  • Single file: no Python, no Node.js, no installer.
     Copy the .bat file anywhere and run it.
-  * Pentest-workflow aware: built for Kali VM exercises
+  • Pentest-workflow aware: built for Kali VM exercises
     where reverse shell listeners get forgotten.
 
 HOW DOES IT WORK?
@@ -598,7 +598,7 @@ FILES IN THIS FOLDER:
   • זיהוי תהליך: "[TCP] Port 4444 - powershell (idle 87 min)".
   • קובץ יחיד: אין Python, אין Node.js, אין installer.
     מעתיקים את ה-.bat לכל מקום ומריצים.
-  • מותאם לפנטסט: מיועד לתרגילי Kali VM שבהם
+  • מותאם לpentest: מיועד לתרגילי Kali VM שבהם
     נשכחים פתוחים — reverse shell listeners.
 
 איך זה עובד?
@@ -629,32 +629,32 @@ FILES IN THIS FOLDER:
   לחיצה כפולה על port-monitor.bat פותחת לוח שליטה:
   • התקנה ראשונה / אישור מחדש  — [Setup]
   • הדגמת חלון ההתראה          — [Run Demo]
-  • עצירת הסריקות, דורש סיסמא  — [Disable]
-  • חזרת הסריקות, ללא סיסמא    — [Enable]
+  • עצירת הסריקות, דורש סיסמה  — [Disable]
+  • חזרת הסריקות, ללא סיסמה    — [Enable]
 
-  למה Disable מוגן בסיסמא אבל Enable לא?
+  למה Disable מוגן בסיסמה אבל Enable לא?
   תוקף שמשיג גישה למחשב ינסה להשבית את הניטור
   לפני שיטמין backdoor. הפעלה מחדש היא תמיד
   פעולה בטוחה ואינה מוגנת.
 
-גישה ל-README — סיסמא:
-  סיסמאת ברירת-מחדל: 12345
-  - במהלך ההתקנה ניתן לקרוא ללא סיסמא, פעם אחת.
-  - לאחר ההתקנה נדרשת סיסמא בכל כניסה.
-  - הסיסמא נשמרת בצורה מאובטחת - לא בטקסט רגיל.
-  - לשינוי סיסמא: לחץ "Change Password" בחלון.
-  - שכחת סיסמא? פנה ל-Claude Code לאיפוס.
+גישה ל-README — סיסמה:
+  סיסמת ברירת-מחדל: 12345
+  - במהלך ההתקנה ניתן לקרוא ללא סיסמה, פעם אחת.
+  - לאחר ההתקנה נדרשת סיסמה בכל כניסה.
+  - הסיסמה נשמרת בצורה מאובטחת - לא בטקסט רגיל.
+  - לשינוי סיסמה: לחץ "Change Password" בחלון.
+  - שכחת סיסמה? פנה ל-Claude Code לאיפוס.
     יעדכן Claude את readme-password.json עם ערך חדש.
 
 התקנה על מחשב חדש:
   • העבר את קובץ port-monitor.bat בלבד, קובץ יחיד מספיק.
   • לחץ לחיצה כפולה על port-monitor.bat.
   • קרא את חלון ההסכמה, סמן את התיבה, לחץ Approve.
-  • ניתן לקרוא מדריך זה ללא סיסמא מיד לאחר ההתקנה.
+  • ניתן לקרוא מדריך זה ללא סיסמה מיד לאחר ההתקנה.
   • זהו. Task Scheduler וקיצורי דרך נוצרים אוטומטית.
 
 ================================================================
-  גרסה: 2.0 | שאלות ואיפוס סיסמא — פנה ל-Claude Code
+  גרסה: 2.0 | שאלות ואיפוס סיסמה — פנה ל-Claude Code
 ================================================================
 "@
 
@@ -687,7 +687,7 @@ FILES IN THIS FOLDER:
     $form.Controls.Add($panel)
     $form.Controls.Add($rtb)
 
-    # BiDi fix v4 - RTF-based: SelectionRightToLeft proved unreliable on Windows 11.
+    # BiDi fix v4 — RTF-based: SelectionRightToLeft proved unreliable on Windows 11.
     # Build content as RTF with \ltrpar for English and \rtlpar\qr\rtlch for Hebrew.
     $form.Add_Shown({
         function ConvertTo-RtfEscape([string]$text) {
@@ -1067,11 +1067,19 @@ function Invoke-Setup {
     $state | ConvertTo-Json -Depth 3 | Set-Content $stateFile
     try { Set-ItemProperty -Path $scriptFile -Name IsReadOnly -Value $true } catch {}
 
+    # VBS wrapper — prevents the brief CMD-like flash when Task Scheduler spawns powershell.exe
+    $vbsFile = Join-Path $dataDir "port-monitor-run.vbs"
+    $vbsContent = 'Dim d, p' + "`r`n" +
+        'd = Left(WScript.ScriptFullName, InStrRev(WScript.ScriptFullName, "\"))' + "`r`n" +
+        'p = d & "port-monitor.ps1"' + "`r`n" +
+        'CreateObject("Wscript.Shell").Run "powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File """ & p & """", 0, False'
+    [System.IO.File]::WriteAllText($vbsFile, $vbsContent, [System.Text.Encoding]::ASCII)
+
     # Task Scheduler
     $taskMsg = "Task Scheduler: skipped."
     if ($chkTask.Checked) {
-        $action   = New-ScheduledTaskAction -Execute "powershell.exe" `
-            -Argument "-ExecutionPolicy Bypass -WindowStyle Hidden -File `"$scriptFile`""
+        $action   = New-ScheduledTaskAction -Execute "wscript.exe" `
+            -Argument "`"$vbsFile`""
         $trigger  = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) `
             -RepetitionInterval (New-TimeSpan -Minutes 15) `
             -RepetitionDuration (New-TimeSpan -Days 9999)
